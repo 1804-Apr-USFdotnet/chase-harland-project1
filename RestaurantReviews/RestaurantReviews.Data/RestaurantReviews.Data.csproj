@@ -79,6 +79,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Restaurant.tt</DependentUpon>
     </Compile>
+    <Compile Include="RestModel.cs" />
     <Compile Include="Review.cs">
       <DependentUpon>Restaurant.tt</DependentUpon>
     </Compile>
