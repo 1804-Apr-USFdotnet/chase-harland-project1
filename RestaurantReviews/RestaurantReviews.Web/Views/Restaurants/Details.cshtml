@@ -1,0 +1,26 @@
+﻿@model RestaurantReviews.Data.Restaurant
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Restaurant</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.restname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.restname)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.restid }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

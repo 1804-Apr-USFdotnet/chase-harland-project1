@@ -26,11 +26,5 @@ namespace RestaurantReviews.Web.Controllers
 
             return View();
         }
-
-        [HttpPost]
-        public ActionResult Create()
-        {
-            Models.Restaurant
-        }
     }
 }

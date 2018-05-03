@@ -16,7 +16,7 @@ namespace RestaurantReviews.Model
         [Required]
         [Range(1,10, ErrorMessage = "Rating should be between 1 and 10")]
         public int Rating { get; set; }
-        [StringLength(200, ErrorMessage ="Comment should not be longer than 200 characters"]
+        [StringLength(200, ErrorMessage ="Comment should not be longer than 200 characters")]
         [DataType(DataType.MultilineText)]
         public string Comments { get; set; }
         
