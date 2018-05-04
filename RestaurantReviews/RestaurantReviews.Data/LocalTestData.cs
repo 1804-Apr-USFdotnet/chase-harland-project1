@@ -118,7 +118,7 @@ namespace RestaurantReviews.Data
 
         private bool RemoveRestaurant(int id, bool cascade)
         {
-            bool output = restaurants.Remove(GetRestaurant(id));
+            bool output = restaurants.RemoveAll(x => x.Id == id) > 0;
             if (cascade)
             {
                 reviews.RemoveAll(x => x.Subject == id);

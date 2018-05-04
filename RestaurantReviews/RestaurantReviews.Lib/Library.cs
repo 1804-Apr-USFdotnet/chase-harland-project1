@@ -41,7 +41,8 @@ namespace RestaurantReviews.Lib
         
         public Model.Restaurant[] Sort(SortBy sortTerm, bool asc, int n)
         {
-            List<Model.Restaurant> restaurants = new List<Model.Restaurant>();
+            List<Model.Restaurant> restaurants =
+                new List<Model.Restaurant>(dm.GetRestaurants());
 
             if (n < 0)
             {

@@ -48,11 +48,21 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="LocalTestDataTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RestaurantReviews.Data\RestaurantReviews.Data.csproj">
+      <Project>{2f89146a-fa47-4a90-a874-c93d2083ff14}</Project>
+      <Name>RestaurantReviews.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RestaurantReviews.Model\RestaurantReviews.Model.csproj">
+      <Project>{bc73466b-9456-471a-b500-3acc05b7dc96}</Project>
+      <Name>RestaurantReviews.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

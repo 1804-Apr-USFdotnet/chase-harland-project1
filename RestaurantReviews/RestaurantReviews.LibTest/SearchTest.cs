@@ -15,7 +15,7 @@ namespace RestaurantReviews.LibTest
 
             Restaurant[] results = lib.Search("Rock");
 
-            Assert.AreEqual(results[0].Name, "Hard_Rock_Cafe");
+            Assert.AreEqual(results[0].Name, "Hard Rock Cafe");
         }
 
         [TestMethod]
@@ -24,10 +24,10 @@ namespace RestaurantReviews.LibTest
             Library lib = new Library("test");
             Restaurant[] restaurants = lib.GetRestaurants();
 
-            Restaurant[] results = lib.Search("_");
+            Restaurant[] results = lib.Search(" ");
 
-            Assert.IsTrue(Array.FindIndex(results, x => x.Name == "Olive_Garden") >= 0);
-            Assert.IsTrue(Array.FindIndex(results, x => x.Name == "Hard_Rock_Cafe") >= 0);
+            Assert.IsTrue(Array.FindIndex(results, x => x.Name == "Olive Garden") >= 0);
+            Assert.IsTrue(Array.FindIndex(results, x => x.Name == "Hard Rock Cafe") >= 0);
         }
 
         [TestMethod]
