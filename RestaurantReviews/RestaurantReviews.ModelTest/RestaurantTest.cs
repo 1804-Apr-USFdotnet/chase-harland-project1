@@ -10,12 +10,13 @@ namespace RestaurantReviews.ModelTest
         [TestMethod]
         public void AvgScoreTest1()
         {
-            Restaurant r = new Restaurant(1, "name");
-            r.AddReview(new Review(1, 2));
-
-            Assert.AreEqual(r.AvgScore, 2);
-
-            r.AddReview(new Review(2, 3));
+            Restaurant r = new Restaurant(1, "name", "good", new Review[]
+            {
+                new Review(1, 2, "", "", 1),
+                new Review(2, 3, "", "", 1)
+            });
+            
+            
             Assert.AreEqual(r.AvgScore, 2.5);
         }
     }

@@ -58,7 +58,6 @@
   <ItemGroup>
     <Compile Include="AwsTsqlAccessor.cs" />
     <Compile Include="Interfaces\IDataManager.cs" />
-    <Compile Include="LocalJson.cs" />
     <Compile Include="LocalTestData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Restaurant.Context.cs">
@@ -79,7 +78,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Restaurant.tt</DependentUpon>
     </Compile>
-    <Compile Include="RestModel.cs" />
     <Compile Include="Review.cs">
       <DependentUpon>Restaurant.tt</DependentUpon>
     </Compile>

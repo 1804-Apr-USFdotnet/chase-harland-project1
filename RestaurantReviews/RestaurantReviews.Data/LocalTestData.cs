@@ -15,39 +15,33 @@ namespace RestaurantReviews.Data
 
         public LocalTestData()
         {
-            restaurants = new List<Model.Restaurant>();
-            reviews = new List<Model.Review>();
+            restaurants = new List<Model.Restaurant>
+            {
+                new Model.Restaurant(1, "Olive Garden", "Italian", null),
+                new Model.Restaurant(2, "Hard Rock Cafe", "American", null),
+                new Model.Restaurant(3, "Subway", "Subs", null),
+                new Model.Restaurant(4, "McDonald's", "Fast food", null)
+            };
+        
+            reviews = new List<Model.Review>
+            {
+                new Model.Review(1, 3, "name1", "comment1", 1),
+                new Model.Review(2, 4, "name2", "comment2", 1),
+                new Model.Review(3, 5, "name3", "comment3", 1),
 
+                new Model.Review(4, 4, null, "comment4", 2),
+                new Model.Review(5, 4, "name5", "comment5", 2),
+                new Model.Review(6, 5, "name6", "comment6", 2),
 
-            reviews.Add(new Model.Review(1, 3, "name1", "comment1", 1));
-            reviews.Add(new Model.Review(2, 4, "name2", "comment2", 1));
-            reviews.Add(new Model.Review(3, 5, "name3", "comment3", 1));
-            Model.Review[] revs1 = new Model.Review[]
-            { reviews[0], reviews[1], reviews[2] };
+                new Model.Review(7, 4, "name7", "comment7", 3),
+                new Model.Review(8, 4, "name8", "comment8", 3),
+                new Model.Review(9, 3, null, "comment9", 3),
 
-            reviews.Add(new Model.Review(4, 4, null, "comment4", 2));
-            reviews.Add(new Model.Review(5, 4, "name5", "comment5", 2));
-            reviews.Add(new Model.Review(6, 5, "name6", "comment6", 2));
-            Model.Review[] revs2 = new Model.Review[]
-            { reviews[3], reviews[4], reviews[5] };
-
-            reviews.Add(new Model.Review(7, 4, "name7", "comment7", 3));
-            reviews.Add(new Model.Review(8, 4, "name8", "comment8", 3));
-            reviews.Add(new Model.Review(9, 3, null, "comment9", 3));
-            Model.Review[] revs3 = new Model.Review[]
-            { reviews[6], reviews[7], reviews[8] };
-
-            reviews.Add(new Model.Review(10, 5, "name10", "comment10", 4));
-            reviews.Add(new Model.Review(11, 2, "name11", null, 4));
-            reviews.Add(new Model.Review(12, 1, "name12", "comment12", 4));
-            reviews.Add(new Model.Review(13, 2, "name13", "comment13", 4));
-            Model.Review[] revs4 = new Model.Review[]
-            { reviews[9], reviews[10], reviews[11], reviews[12] };
-
-            restaurants.Add(new Model.Restaurant(1, "Olive_Garden", "Italian", revs1));
-            restaurants.Add(new Model.Restaurant(2, "Hard_Rock_Cafe", "American", revs2));
-            restaurants.Add(new Model.Restaurant(3, "Subway", "Subs", revs3));
-            restaurants.Add(new Model.Restaurant(4, "McDonald's", "Fast food", revs4));
+                new Model.Review(10, 5, "name10", "comment10", 4),
+                new Model.Review(11, 2, "name11", null, 4),
+                new Model.Review(12, 1, "name12", "comment12", 4),
+                new Model.Review(13, 2, "name13", "comment13", 4)
+            };
         }
 
         public int AddRestaurant(Model.Restaurant r)
@@ -78,12 +72,28 @@ namespace RestaurantReviews.Data
         
         public Model.Restaurant GetRestaurant(int id)
         {
-            return restaurants.Find(x => x.Id == id);
+            var r = restaurants.Find(x => x.Id == id);
+            if (r == null)
+            {
+                return null;
+            }
+            return new Model.Restaurant(
+                r.Id, r.Name, r.Food,
+                reviews.Where(x => x.Subject == id).ToArray());
         }
 
         public Model.Restaurant[] GetRestaurants()
         {
-            return restaurants.ToArray();
+            Model.Restaurant[] output = new Model.Restaurant[restaurants.Count()];
+            Model.Restaurant r;
+            for(int i = 0; i < output.Length; i++)
+            {
+                r = restaurants.ElementAt(i);
+                output[i] = new Model.Restaurant(
+                    r.Id, r.Name, r.Food,
+                    reviews.Where(x => x.Subject == r.Id).ToArray());
+            }
+            return output;
         }
 
         public Model.Review GetReview(int id)
@@ -103,7 +113,18 @@ namespace RestaurantReviews.Data
 
         public bool RemoveRestaurant(int id)
         {
-            return restaurants.Remove(GetRestaurant(id));
+            return RemoveRestaurant(id, true);
+        }
+
+        private bool RemoveRestaurant(int id, bool cascade)
+        {
+            bool output = restaurants.Remove(GetRestaurant(id));
+            if (cascade)
+            {
+                reviews.RemoveAll(x => x.Subject == id);
+            }
+
+            return output;
         }
 
         public bool RemoveReview(int id)
@@ -113,7 +134,7 @@ namespace RestaurantReviews.Data
 
         public bool UpdateRestaurant(Model.Restaurant r)
         {
-            bool result = RemoveRestaurant(r.Id);
+            bool result = RemoveRestaurant(r.Id, false);
             if (result)
             {
                 AddRestaurant(r);

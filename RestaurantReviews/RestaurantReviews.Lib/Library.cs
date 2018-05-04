@@ -9,11 +9,9 @@ using System.Configuration;
 namespace RestaurantReviews.Lib
 {
     public enum SortBy { Alphabetical, Score, NumReviews };
-
-
+    
     public class Library
     {
-        private List<Model.Restaurant> restaurants;
         private IDataManager dm;
 
         public Library(string mode)
@@ -25,7 +23,6 @@ namespace RestaurantReviews.Lib
         {
             string mode = ConfigurationManager.AppSettings["DataManager"];
             Init(mode);
-
         }
 
         private void Init(string mode)
@@ -35,21 +32,17 @@ namespace RestaurantReviews.Lib
             {
                 dm = new LocalTestData();
             }
-            else if (mode.ToLower() == "json")
-            {
-                dm = new LocalJson();
-            }
             else
             {
                 dm = new AwsTsqlAccessor();
             }
-
-            restaurants = new List<Model.Restaurant>(dm.GetRestaurants());
         }
 
         
         public Model.Restaurant[] Sort(SortBy sortTerm, bool asc, int n)
         {
+            List<Model.Restaurant> restaurants = new List<Model.Restaurant>();
+
             if (n < 0)
             {
                 n = restaurants.Count();
@@ -77,14 +70,14 @@ namespace RestaurantReviews.Lib
                 {
                     restaurants.Sort(delegate (Model.Restaurant x, Model.Restaurant y)
                     {
-                        return x.GetReviews().Count().CompareTo(y.GetReviews().Count());
+                        return x.Reviews.Count().CompareTo(y.Reviews.Count());
                     });
                 }
                 else
                 {
                     restaurants.Sort(delegate (Model.Restaurant x, Model.Restaurant y)
                     {
-                        return y.GetReviews().Count().CompareTo(x.GetReviews().Count());
+                        return y.Reviews.Count().CompareTo(x.Reviews.Count());
                     });
                 }
             }
@@ -118,6 +111,7 @@ namespace RestaurantReviews.Lib
 
         public Model.Restaurant[] Search(string[] searchTerms)
         {
+            List<Model.Restaurant> restaurants = new List<Model.Restaurant>(dm.GetRestaurants());
             List<Model.Restaurant> results = new List<Model.Restaurant>();
             List<int> resultScores = new List<int>();
 
@@ -157,46 +151,27 @@ namespace RestaurantReviews.Lib
 
         public Model.Restaurant[] GetRestaurants()
         {
-            return restaurants.ToArray();
+            return dm.GetRestaurants();
         }
 
-        public Model.Review[] GetReviews(string restaurantName)
+        public Model.Restaurant GetRestaurant(int id)
         {
-            return RestLookup(restaurantName).GetReviews();
+            return dm.GetRestaurant(id);
         }
 
-        public void AddReview(int restaurantId, int score)
+        public Model.Review[] GetReviews(int id)
         {
-            Model.Restaurant rest = RestLookup(restaurantId);
-            int newId = dm.AddReview(new Model.Review(-1, score), restaurantId);
-            rest.AddReview(new Model.Review(newId, score));
+            return dm.GetRestaurant(id).Reviews;
         }
 
-
-        public Model.Restaurant RestLookup(string name)
+        public void AddReview(Model.Review rev)
         {
-            foreach (Model.Restaurant r in restaurants)
-            {
-                if (r.Name.ToLower() == name.ToLower())
-                {
-                    return r;
-                }
-            }
-
-            return null;
+            dm.AddReview(rev);
         }
 
-        private Model.Restaurant RestLookup(int id)
+        public bool EditReview(Model.Review rev)
         {
-            foreach (Model.Restaurant r in restaurants)
-            {
-                if (r.Id == id)
-                {
-                    return r;
-                }
-            }
-
-            return null;
+            return dm.UpdateReview(rev);
         }
         
     }

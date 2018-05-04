@@ -147,6 +147,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Restaurant.cs" />
+    <Compile Include="Models\RestaurantDetailed.cs" />
+    <Compile Include="Models\Review.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -189,7 +192,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
     <Folder Include="Views\Restaurant\" />
   </ItemGroup>
   <ItemGroup>
@@ -204,6 +206,16 @@
   <ItemGroup>
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RestaurantReviews.Lib\RestaurantReviews.Lib.csproj">
+      <Project>{38e69362-6ba7-421b-8afa-d94d80246bf1}</Project>
+      <Name>RestaurantReviews.Lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RestaurantReviews.Model\RestaurantReviews.Model.csproj">
+      <Project>{bc73466b-9456-471a-b500-3acc05b7dc96}</Project>
+      <Name>RestaurantReviews.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
