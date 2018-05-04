@@ -17,6 +17,8 @@ namespace RestaurantReviews.Data
         public int revid { get; set; }
         public int revscore { get; set; }
         public int revsubject { get; set; }
+        public string reviewer { get; set; }
+        public string comment { get; set; }
     
         public virtual Restaurant Restaurant { get; set; }
     }

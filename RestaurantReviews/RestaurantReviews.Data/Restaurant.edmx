@@ -4,23 +4,26 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="RestaurantDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="RestaurantDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Restaurants">
           <Key>
             <PropertyRef Name="restid" />
           </Key>
-          <Property Name="restid" Type="int" Nullable="false" />
+          <Property Name="restid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="restname" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="food" Type="nvarchar" MaxLength="60" />
         </EntityType>
         <EntityType Name="Reviews">
           <Key>
             <PropertyRef Name="revid" />
           </Key>
-          <Property Name="revid" Type="int" Nullable="false" />
+          <Property Name="revid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="revscore" Type="int" Nullable="false" />
           <Property Name="revsubject" Type="int" Nullable="false" />
+          <Property Name="reviewer" Type="nvarchar" MaxLength="40" />
+          <Property Name="comment" Type="nvarchar" MaxLength="200" />
         </EntityType>
-        <Association Name="FK_Reviews_restsubj_restid_cascade">
+        <Association Name="FK__Reviews__revsubj__66603565">
           <End Role="Restaurants" Type="Self.Restaurants" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -37,13 +40,12 @@
         <EntityContainer Name="RestaurantDBModelStoreContainer">
           <EntitySet Name="Restaurants" EntityType="Self.Restaurants" Schema="Restaurant" store:Type="Tables" />
           <EntitySet Name="Reviews" EntityType="Self.Reviews" Schema="Restaurant" store:Type="Tables" />
-          <AssociationSet Name="FK_Reviews_restsubj_restid_cascade" Association="Self.FK_Reviews_restsubj_restid_cascade">
+          <AssociationSet Name="FK__Reviews__revsubj__66603565" Association="Self.FK__Reviews__revsubj__66603565">
             <End Role="Restaurants" EntitySet="Restaurants" />
             <End Role="Reviews" EntitySet="Reviews" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="RestaurantDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -54,6 +56,7 @@
           <Property Name="restid" Type="Int32" Nullable="false" />
           <Property Name="restname" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Reviews" Relationship="Self.FK_Reviews_restsubj_restid_cascade" FromRole="Restaurants" ToRole="Reviews" />
+          <Property Name="food" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Review">
           <Key>
@@ -63,6 +66,8 @@
           <Property Name="revscore" Type="Int32" Nullable="false" />
           <Property Name="revsubject" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Restaurant" Relationship="Self.FK_Reviews_restsubj_restid_cascade" FromRole="Reviews" ToRole="Restaurants" />
+          <Property Name="reviewer" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="comment" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_Reviews_restsubj_restid_cascade">
           <End Role="Restaurants" Type="Self.Restaurant" Multiplicity="1">
@@ -95,6 +100,7 @@
           <EntitySetMapping Name="Restaurants">
             <EntityTypeMapping TypeName="RestaurantDBModel.Restaurant">
               <MappingFragment StoreEntitySet="Restaurants">
+                <ScalarProperty Name="food" ColumnName="food" />
                 <ScalarProperty Name="restid" ColumnName="restid" />
                 <ScalarProperty Name="restname" ColumnName="restname" />
               </MappingFragment>
@@ -103,6 +109,8 @@
           <EntitySetMapping Name="Reviews">
             <EntityTypeMapping TypeName="RestaurantDBModel.Review">
               <MappingFragment StoreEntitySet="Reviews">
+                <ScalarProperty Name="comment" ColumnName="comment" />
+                <ScalarProperty Name="reviewer" ColumnName="reviewer" />
                 <ScalarProperty Name="revid" ColumnName="revid" />
                 <ScalarProperty Name="revscore" ColumnName="revscore" />
                 <ScalarProperty Name="revsubject" ColumnName="revsubject" />

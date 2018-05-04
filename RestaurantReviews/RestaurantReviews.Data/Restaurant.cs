@@ -22,6 +22,7 @@ namespace RestaurantReviews.Data
     
         public int restid { get; set; }
         public string restname { get; set; }
+        public string food { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Review> Reviews { get; set; }
