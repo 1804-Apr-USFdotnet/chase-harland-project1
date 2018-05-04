@@ -10,7 +10,7 @@ namespace RestaurantReviews.Web.Controllers
     {
         public ActionResult Index()
         {
-            return View(Models.Restaurant.GetRestaurants());
+            return View();
         }
 
         public ActionResult About()

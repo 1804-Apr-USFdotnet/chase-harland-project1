@@ -1,55 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Json;
+﻿using System.Linq;
 
 namespace RestaurantReviews.Model
 {
-    [DataContract]
     public class Restaurant
     {
-        [DataMember]
         public int Id { get; private set; }
-        [DataMember]
         public string Name { get; private set; }
-        [DataMember]
-        public double AvgScore { get; private set; }
-        [DataMember]
-        private List<Review> reviews;
+        public string Food { get; private set; }
 
-        public Restaurant(int id, string name)
+        private double _avgScore;
+
+        //Lazy calculation
+        public double AvgScore
+        {
+            get
+            {
+                if (_avgScore < 0)
+                {
+                    if (Reviews != null)
+                    {
+                        return _avgScore = 1.0 * Reviews.Sum(x => x.Score) / Reviews.Count();
+                    }
+                    else
+                    {
+                        return _avgScore = 0;
+                    } 
+                }
+                else
+                {
+                    return _avgScore;
+                }
+            }
+        }
+        
+        public Review[] Reviews { get; private set; }
+
+        public Restaurant(int id, string name, string food, Review[] reviews)
         {
             Id = id;
             Name = name;
-            AvgScore = 0;
-            reviews = new List<Review>();
-        }
-
-        public void AddReview(Review r)
-        {
-            reviews.Add(r);
-            AvgScore = AvgScore * (reviews.Count - 1) / reviews.Count + r.Score / ((double)reviews.Count);
-        }
-
-        public void AddReviews(Review[] revs)
-        {
-            foreach (Review r in revs)
-            {
-                AddReview(r);
-            }
-        }
-
-        public bool RemoveReview(Review r)
-        {
-            return reviews.Remove(r);
-        }
-
-        public Review[] GetReviews()
-        {
-            return reviews.ToArray();
+            Food = food;
+            Reviews = reviews;
+            _avgScore = -1;
         }
     }
 }

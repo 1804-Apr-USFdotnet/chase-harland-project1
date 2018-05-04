@@ -1,0 +1,20 @@
+﻿@model IEnumerable<RestaurantReviews.Web.Models.Restaurant>
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div>
+    <table>
+        <thead>Name</thead>
+        <thead>Address</thead>
+        <tbody>
+            @foreach (var rest in Model)
+            {
+                <tr>
+                    <td>@rest.Name</td>
+                    <td>@rest.Adress</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

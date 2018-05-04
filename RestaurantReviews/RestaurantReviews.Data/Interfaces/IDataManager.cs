@@ -14,15 +14,16 @@ namespace RestaurantReviews.Data
         // Restaurants
         Model.Restaurant[] GetRestaurants();
         Model.Restaurant GetRestaurant(int id);
-        int AddRestaurant(Model.Restaurant restaurant);
-        Model.Restaurant UpdateRestaurant(int id, string restname);
+        int AddRestaurant(Model.Restaurant r);
+        bool UpdateRestaurant(Model.Restaurant r);
         bool RemoveRestaurant(int id);
 
         // Reviews
         Model.Review[] GetReviews();
+        Model.Review[] GetReviews(int restId);
         Model.Review GetReview(int id);
-        int AddReview(Model.Review review, int restId);
-        Model.Review UpdateReview(int id, int revscore, int revsubject);
+        int AddReview(Model.Review rev);
+        bool UpdateReview(Model.Review);
         bool RemoveReview(int id);
     }
 }

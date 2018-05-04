@@ -2,38 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.ComponentModel.DataAnnotations;
 
 namespace RestaurantReviews.Web.Models
 {
     public class Restaurant
     {
+        [ScaffoldColumn(false)]
+        public int Id { get; set; }
+        [Required]
+        [MaxLength(40, ErrorMessage = "Can be no more than 40 characters long")]
         public string Name { get; set; }
-        public string Street1 { get; set; }
-        public string Street2 { get; set; }
-        public string City { get; set; }
-        public string State { get; set; }
-        public string Country { get; set; }
-        public string Zipcode { get; set; }
-        
-        public string Adress
+        [MaxLength(60, ErrorMessage = "Can be no more than 60 characters long")]
+        public string Food { get; set; }
+
+        public Restaurant(int id, string name, string food)
         {
-            get
-            {
-                return $"{Street1}, {Street2}, {City}, {State}, {Country}, {Zipcode}";
-            }
+            Id = id;
+            Name = name;
+            Food = food;
         }
-
-        public static IEnumerable<Restaurant> GetRestaurants()
-        {
-            List<Restaurant> restaurants = new List<Restaurant>(new Restaurant[]
-            {
-                new Restaurant(){Street1="Elden st", Street2="123", Name = "Paradise1", City="Reston", State="VA", Country="US", Zipcode="10130"},
-                new Restaurant(){Street1="Elden st", Street2="123", Name = "Paradise2", City="Reston", State="VA", Country="US", Zipcode="10230"},
-                new Restaurant(){Street1="Elden st", Street2="123", Name = "Paradise3", City="Reston", State="VA", Country="US", Zipcode="10330"}
-            });
-
-            return restaurants;
-        }
-
-    }   
-}       
+    }
+}

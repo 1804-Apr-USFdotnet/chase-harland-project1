@@ -1,24 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Json;
-
+﻿
 namespace RestaurantReviews.Model
 {
-    [DataContract]
     public class Review
     {
-        [DataMember]
         public int Id { get; private set; }
-        [DataMember]
         public int Score { get; private set; }
+        public string Reviewer { get; private set; }
+        public string Comment { get; private set; }
+        public int Subject { get; private set; }
 
-        public Review(int id, int score)
+        public Review(int id, int score, string reviewer, string comment, int subject)
         {
+            Id = id;
             Score = score;
+            Reviewer = reviewer;
+            Comment = comment;
+            Subject = subject;
         }
     }
 }

@@ -10,112 +10,125 @@ namespace RestaurantReviews.Data
     public class LocalTestData : IDataManager
     {
 
-        private Model.Restaurant[] restaurants;
-        private Model.Review[] reviews;
+        private List<Model.Restaurant> restaurants;
+        private List<Model.Review> reviews;
 
         public LocalTestData()
         {
-            restaurants = new Model.Restaurant[4];
-            reviews = new Model.Review[13];
+            restaurants = new List<Model.Restaurant>();
+            reviews = new List<Model.Review>();
 
-            restaurants[0] = new Model.Restaurant(1, "Olive_Garden");
-            restaurants[1] = new Model.Restaurant(2, "Hard_Rock_Cafe");
-            restaurants[2] = new Model.Restaurant(3, "Subway");
-            restaurants[3] = new Model.Restaurant(4, "McDonald's");
 
-            reviews[0] = new Model.Review(1, 3);
-            reviews[1] = new Model.Review(2, 4);
-            reviews[2] = new Model.Review(3, 5);
-            restaurants[0].AddReview(reviews[0]);
-            restaurants[0].AddReview(reviews[1]);
-            restaurants[0].AddReview(reviews[2]);
+            reviews.Add(new Model.Review(1, 3, "name1", "comment1", 1));
+            reviews.Add(new Model.Review(2, 4, "name2", "comment2", 1));
+            reviews.Add(new Model.Review(3, 5, "name3", "comment3", 1));
+            Model.Review[] revs1 = new Model.Review[]
+            { reviews[0], reviews[1], reviews[2] };
 
-            reviews[3] = new Model.Review(4, 4);
-            reviews[4] = new Model.Review(5, 4);
-            reviews[5] = new Model.Review(6, 5);
-            restaurants[1].AddReview(reviews[3]);
-            restaurants[1].AddReview(reviews[4]);
-            restaurants[1].AddReview(reviews[5]);
+            reviews.Add(new Model.Review(4, 4, null, "comment4", 2));
+            reviews.Add(new Model.Review(5, 4, "name5", "comment5", 2));
+            reviews.Add(new Model.Review(6, 5, "name6", "comment6", 2));
+            Model.Review[] revs2 = new Model.Review[]
+            { reviews[3], reviews[4], reviews[5] };
 
-            reviews[6] = new Model.Review(7, 4);
-            reviews[7] = new Model.Review(8, 4);
-            reviews[8] = new Model.Review(9, 3);
-            restaurants[2].AddReview(reviews[6]);
-            restaurants[2].AddReview(reviews[7]);
-            restaurants[2].AddReview(reviews[8]);
+            reviews.Add(new Model.Review(7, 4, "name7", "comment7", 3));
+            reviews.Add(new Model.Review(8, 4, "name8", "comment8", 3));
+            reviews.Add(new Model.Review(9, 3, null, "comment9", 3));
+            Model.Review[] revs3 = new Model.Review[]
+            { reviews[6], reviews[7], reviews[8] };
 
-            reviews[9] = new Model.Review(10, 5);
-            reviews[10] = new Model.Review(11, 2);
-            reviews[11] = new Model.Review(12, 1);
-            reviews[12] = new Model.Review(13, 2);
-            restaurants[3].AddReview(reviews[9]);
-            restaurants[3].AddReview(reviews[10]);
-            restaurants[3].AddReview(reviews[11]);
-            restaurants[3].AddReview(reviews[12]);
+            reviews.Add(new Model.Review(10, 5, "name10", "comment10", 4));
+            reviews.Add(new Model.Review(11, 2, "name11", null, 4));
+            reviews.Add(new Model.Review(12, 1, "name12", "comment12", 4));
+            reviews.Add(new Model.Review(13, 2, "name13", "comment13", 4));
+            Model.Review[] revs4 = new Model.Review[]
+            { reviews[9], reviews[10], reviews[11], reviews[12] };
+
+            restaurants.Add(new Model.Restaurant(1, "Olive_Garden", "Italian", revs1));
+            restaurants.Add(new Model.Restaurant(2, "Hard_Rock_Cafe", "American", revs2));
+            restaurants.Add(new Model.Restaurant(3, "Subway", "Subs", revs3));
+            restaurants.Add(new Model.Restaurant(4, "McDonald's", "Fast food", revs4));
         }
 
-        public int AddRestaurant(Model.Restaurant restaurant)
+        public int AddRestaurant(Model.Restaurant r)
         {
-            throw new NotImplementedException();
+            int[] ids = restaurants.Select(x => x.Id).ToArray();
+            int i = r.Id;
+            while (ids.Contains(i))
+            {
+                i++;
+            }
+
+            restaurants.Add(new Model.Restaurant(i, r.Name, r.Food, r.Reviews));
+            return i;
         }
 
-        public int AddReview(Model.Review review, int restId)
+        public int AddReview(Model.Review rev)
         {
-            throw new NotImplementedException();
-        }
+            int[] ids = reviews.Select(x => x.Id).ToArray();
+            int i = rev.Id;
+            while (ids.Contains(i))
+            {
+                i++;
+            }
 
+            reviews.Add(new Model.Review(i, rev.Score, rev.Reviewer, rev.Comment, rev.Subject));
+            return i;
+        }
+        
         public Model.Restaurant GetRestaurant(int id)
         {
-            try
-            {
-                return restaurants[id - 1];
-            }
-            catch (Exception)
-            {
-                return null;
-            }
+            return restaurants.Find(x => x.Id == id);
         }
 
         public Model.Restaurant[] GetRestaurants()
         {
-            return restaurants;
+            return restaurants.ToArray();
         }
 
         public Model.Review GetReview(int id)
         {
-            try
-            {
-                return reviews[id - 1];
-            }
-            catch (Exception)
-            {
-                return null;
-            }
+            return reviews.Find(x => x.Id == id);
+        }
+
+        public Model.Review[] GetReviews(int restId)
+        {
+            return reviews.Where(x => x.Subject == restId).ToArray();
         }
 
         public Model.Review[] GetReviews()
         {
-            return reviews;
+            return reviews.ToArray();
         }
 
         public bool RemoveRestaurant(int id)
         {
-            throw new NotImplementedException();
+            return restaurants.Remove(GetRestaurant(id));
         }
 
         public bool RemoveReview(int id)
         {
-            throw new NotImplementedException();
+            return reviews.Remove(GetReview(id));
         }
 
-        public Model.Restaurant UpdateRestaurant(int id, string restname)
+        public bool UpdateRestaurant(Model.Restaurant r)
         {
-            throw new NotImplementedException();
+            bool result = RemoveRestaurant(r.Id);
+            if (result)
+            {
+                AddRestaurant(r);
+            }
+            return result;
         }
 
-        public Model.Review UpdateReview(int id, int revscore, int revsubject)
+        public bool UpdateReview(Model.Review rev)
         {
-            throw new NotImplementedException();
+            bool result = RemoveReview(rev.Id);
+            if (result)
+            {
+                AddReview(rev);
+            }
+            return result;
         }
     }
 }

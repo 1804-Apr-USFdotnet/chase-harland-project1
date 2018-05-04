@@ -19,23 +19,26 @@ namespace RestaurantReviews.Data
             {
                 Restaurant newRest = context.Restaurants.Add(new Restaurant()
                 {
-                    restname = restaurant.Name
+                    restname = restaurant.Name,
+                    food = restaurant.Food
                 });
 
                 context.SaveChanges();
-                log.Info("Added restaurant: " + newRest.restname);
+                log.Info("Added restaurant: " + newRest.restid + ": " + newRest.restname);
                 return newRest.restid;
             }
         }
 
-        public int AddReview(Model.Review review, int restId)
+        public int AddReview(Model.Review review)
         {
             using (var context = new RestaurantDBEntities())
             {
                 Review newRev = context.Reviews.Add(new Review()
                 {
                     revscore = review.Score,
-                    revsubject = restId
+                    reviewer = review.Reviewer,
+                    comment = review.Comment,
+                    revsubject = review.Subject
                 });
 
                 context.SaveChanges();
@@ -56,15 +59,9 @@ namespace RestaurantReviews.Data
         {
             using (var context = new RestaurantDBEntities())
             {
-                var rests = context.Restaurants.Count();
-                Model.Restaurant[] output = new Model.Restaurant[context.Restaurants.Count()];
-                int i = 0;
-                foreach (var r in context.Restaurants)
-                {
-                    output[i++] = Convert(r);
-                }
-
-                return output;
+                return context.Restaurants
+                    .Select(x => Convert(x))
+                    .ToArray();
             }
         }
 
@@ -76,18 +73,24 @@ namespace RestaurantReviews.Data
             }
         }
 
+        public Model.Review[] GetReviews(int restId)
+        {
+            using (var context = new RestaurantDBEntities())
+            {
+                return context.Reviews
+                    .Where(x => x.revsubject == restId)
+                    .Select(x => Convert(x))
+                    .ToArray();
+            }
+        }
+
         public Model.Review[] GetReviews()
         {
             using (var context = new RestaurantDBEntities())
             {
-                Model.Review[] output = new Model.Review[context.Reviews.Count()];
-                int i = 0;
-                foreach (var r in context.Reviews)
-                {
-                    output[i++] = Convert(r);
-                }
-
-                return output;
+                return context.Reviews
+                    .Select(x => Convert(x))
+                    .ToArray();
             }
         }
 
@@ -131,47 +134,57 @@ namespace RestaurantReviews.Data
             }
         }
 
-        public Model.Restaurant UpdateRestaurant(int id, string restname)
+        public bool UpdateRestaurant(Model.Restaurant r)
         {
             using (var context = new RestaurantDBEntities())
             {
-                var std = context.Restaurants.Find(id);
-                std.restname = restname;
+                var std = context.Restaurants.Find(r.Id);
+                if (std == null)
+                {
+                    log.Error("Update failed to locate restaurant: " + r.Id);
+                    return false;
+                }
+                std.restname = r.Name;
+                std.food = r.Food;
 
                 context.SaveChanges();
-                log.Info("Updated restaurant " + id);
-                return Convert(std);
+                log.Info("Updated restaurant " + r.Id);
+                return true;
             }
         }
 
-        public Model.Review UpdateReview(int id, int revscore, int revsubject)
+        public bool UpdateReview(Model.Review rev)
         {
             using (var context = new RestaurantDBEntities())
             {
-                var std = context.Reviews.Find(id);
-                std.revscore = revscore;
-                std.revsubject = revsubject;
+                var std = context.Reviews.Find(rev.Id);
+                if (std == null)
+                {
+                    log.Error("Update failed to locate Review: " + rev.Id);
+                    return false;
+                }
+                std.revscore = rev.Score;
+                std.reviewer = rev.Reviewer;
+                std.comment = rev.Comment;
+                std.revsubject = rev.Subject;
 
                 context.SaveChanges();
-                log.Info("Updated review " + id);
-                return Convert(std);
+                log.Info("Updated review " + rev.Id);
+                return true;
             }
         }
 
 
         private Model.Restaurant Convert(Restaurant rest)
         {
-            Model.Restaurant output = new Model.Restaurant(rest.restid, rest.restname);
-            foreach (Review rev in rest.Reviews)
-            {
-                output.AddReview(Convert(rev));
-            }
-            return output;
+            return new Model.Restaurant(rest.restid, rest.restname,
+                rest.food, rest.Reviews.Select(x => Convert(x)).ToArray());
         }
 
         private Model.Review Convert(Review rev)
         {
-            return new Model.Review(rev.revid, rev.revscore);
+            return new Model.Review(rev.revid, rev.revscore,
+                rev.reviewer, rev.comment, rev.revsubject);
         }
     }
 }
