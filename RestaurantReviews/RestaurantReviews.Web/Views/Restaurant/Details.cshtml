@@ -1,0 +1,43 @@
+﻿@model RestaurantReviews.Web.Models.RestaurantDetailed
+
+<div>
+    <h4>RestaurantDetailed</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AvgScore)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AvgScore)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Food)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Food)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NumReviews)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NumReviews)
+        </dd>
+
+    </dl>
+</div>
+<div>
+    @Html.Partial("_Reviews", Model.GetReviews())
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -59,9 +59,7 @@ namespace RestaurantReviews.Data
         {
             using (var context = new RestaurantDBEntities())
             {
-                return context.Restaurants
-                    .Select(x => Convert(x))
-                    .ToArray();
+                return Convert(context.Restaurants.ToArray());
             }
         }
 
@@ -179,6 +177,11 @@ namespace RestaurantReviews.Data
         {
             return new Model.Restaurant(rest.restid, rest.restname,
                 rest.food, rest.Reviews.Select(x => Convert(x)).ToArray());
+        }
+
+        private Model.Restaurant[] Convert(Restaurant[] rests)
+        {
+            return rests.Select(x => Convert(x)).ToArray();
         }
 
         private Model.Review Convert(Review rev)

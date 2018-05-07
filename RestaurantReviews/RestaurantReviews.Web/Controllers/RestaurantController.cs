@@ -2,22 +2,51 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Net;
 using System.Web.Mvc;
+using RestaurantReviews.Lib;
 
 namespace RestaurantReviews.Web.Controllers
 {
     public class RestaurantController : Controller
     {
+        private Library lib;
+
+        public RestaurantController(string mode)
+        {
+            lib = new Library(mode);
+        }
+
+        public RestaurantController()
+        {
+            lib = new Library();
+        }
+
+
         // GET: Restaurant
         public ActionResult Index()
         {
-            return View();
+            return View(
+                ModelConverter.Convert(
+                    lib.GetRestaurants()));
         }
 
         // GET: Restaurant/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Model.Restaurant r = lib.GetRestaurant((int)id);
+
+            if (r == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(ModelConverter.Convert(r));
         }
 
         // GET: Restaurant/Create
@@ -28,11 +57,12 @@ namespace RestaurantReviews.Web.Controllers
 
         // POST: Restaurant/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(Models.Restaurant r)
         {
             try
             {
-                // TODO: Add insert logic here
+                lib.AddRestaurant(ModelConverter.Convert(r));
 
                 return RedirectToAction("Index");
             }
@@ -43,19 +73,31 @@ namespace RestaurantReviews.Web.Controllers
         }
 
         // GET: Restaurant/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Model.Restaurant r = lib.GetRestaurant((int)id);
+
+            if (r == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(ModelConverter.Convert(r));
         }
 
         // POST: Restaurant/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(Models.Restaurant r)
         {
             try
             {
-                // TODO: Add update logic here
-
+                lib.EditRestaurant(ModelConverter.Convert(r));
                 return RedirectToAction("Index");
             }
             catch
@@ -65,18 +107,36 @@ namespace RestaurantReviews.Web.Controllers
         }
 
         // GET: Restaurant/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var r = lib.GetRestaurant((int)id);
+
+            if (r == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(ModelConverter.Convert(r));
         }
 
         // POST: Restaurant/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int? id, FormCollection collection)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             try
             {
-                // TODO: Add delete logic here
+                lib.RemoveRestaurant((int)id);
 
                 return RedirectToAction("Index");
             }

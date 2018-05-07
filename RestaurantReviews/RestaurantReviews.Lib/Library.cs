@@ -27,8 +27,11 @@ namespace RestaurantReviews.Lib
 
         private void Init(string mode)
         {
-
-            if (mode.ToLower() == "test")
+            if (mode == null)
+            {
+                dm = new AwsTsqlAccessor();
+            }
+            else if (mode.ToLower() == "test")
             {
                 dm = new LocalTestData();
             }
@@ -149,31 +152,46 @@ namespace RestaurantReviews.Lib
             return Search(new string[] { term });
         }
 
-
         public Model.Restaurant[] GetRestaurants()
         {
             return dm.GetRestaurants();
         }
-
         public Model.Restaurant GetRestaurant(int id)
         {
             return dm.GetRestaurant(id);
         }
+        public int AddRestaurant(Model.Restaurant r)
+        {
+            return dm.AddRestaurant(r);
+        } 
+        public bool EditRestaurant(Model.Restaurant r)
+        {
+            return dm.UpdateRestaurant(r);
+        }
+        public bool RemoveRestaurant(int id)
+        {
+            return dm.RemoveRestaurant(id);
+        }
 
+        public Model.Review GetReview(int id)
+        {
+            return dm.GetReview(id);
+        }
         public Model.Review[] GetReviews(int id)
         {
             return dm.GetRestaurant(id).Reviews;
         }
-
         public void AddReview(Model.Review rev)
         {
             dm.AddReview(rev);
         }
-
         public bool EditReview(Model.Review rev)
         {
             return dm.UpdateReview(rev);
         }
-        
+        public bool RemoveReview(int id)
+        {
+            return dm.RemoveReview(id);
+        }
     }
 }

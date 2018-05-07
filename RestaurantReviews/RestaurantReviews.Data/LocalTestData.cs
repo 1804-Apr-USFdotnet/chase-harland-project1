@@ -59,6 +59,12 @@ namespace RestaurantReviews.Data
 
         public int AddReview(Model.Review rev)
         {
+            int[] restIds = restaurants.Select(x => x.Id).ToArray();
+            if (!restIds.Contains(rev.Subject))
+            {
+                throw new ArgumentException("Target Restaurant does not exist. Restaurant ID: " + rev.Subject);
+            }
+
             int[] ids = reviews.Select(x => x.Id).ToArray();
             int i = rev.Id;
             while (ids.Contains(i))

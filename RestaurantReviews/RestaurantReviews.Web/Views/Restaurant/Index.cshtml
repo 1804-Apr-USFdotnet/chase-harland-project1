@@ -1,0 +1,56 @@
+﻿@model IEnumerable<RestaurantReviews.Web.Models.RestaurantDetailed>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Restaurant List</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Name
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            Score
+            @Html.DisplayNameFor(model => model.AvgScore)
+        </th>
+        <th>
+            Type of food
+            @Html.DisplayNameFor(model => model.Food)
+        </th>
+        <th>
+            Number of reviews
+            @Html.DisplayNameFor(model => model.NumReviews)
+        </th>
+
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(itemModel => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(itemModel => item.AvgScore)
+        </td>
+        <td>
+            @Html.DisplayFor(itemModel => item.Food)
+        </td>
+        <td>
+            @Html.DisplayFor(itemModel => item.NumReviews)
+        </td>
+    <td>
+        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+    </td>
+    </tr>
+}
+
+</table>
