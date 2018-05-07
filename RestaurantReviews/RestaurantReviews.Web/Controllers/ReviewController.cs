@@ -25,23 +25,21 @@ namespace RestaurantReviews.Web.Controllers
         // GET: Review
         public ActionResult Index(int? restId)
         {
-            if (id == null)
+            if (restId == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Model.Restaurant r = lib.GetRestaurant((int)id);
+            Model.Restaurant r = lib.GetRestaurant((int)restId);
 
             if (r == null)
             {
                 return HttpNotFound();
             }
+            
+            var rest = ModelConverter.Convert(r);
 
-            var list = 
-                ModelConverter.Convert(lib.GetReviews((int)id),
-                ModelConverter.ConvertLite(r));
-
-            return View(list);
+            return View(r);
         }
 
         // GET: Review/Details/5
@@ -98,7 +96,7 @@ namespace RestaurantReviews.Web.Controllers
             {
                 lib.AddReview(ModelConverter.Convert(rev));
 
-                return RedirectToAction("Index", rev.Subject);
+                return RedirectToAction("Index", new { id = rev.Subject });
             }
             catch
             {
@@ -143,7 +141,7 @@ namespace RestaurantReviews.Web.Controllers
             {
                 lib.EditReview(ModelConverter.Convert(rev));
 
-                return RedirectToAction("Index", rev.Subject);
+                return RedirectToAction("Index", new { id = rev.Subject });
             }
             catch
             {
@@ -197,7 +195,7 @@ namespace RestaurantReviews.Web.Controllers
                     return HttpNotFound();
                 }
 
-                return RedirectToAction("Index", rev.Subject);
+                return RedirectToAction("Index", new { id = rev.Subject });
             }
             catch
             {

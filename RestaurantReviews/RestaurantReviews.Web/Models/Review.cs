@@ -13,6 +13,11 @@ namespace RestaurantReviews.Web.Models
         [Required]
         [Range(1,5, ErrorMessage = "Rating must be 1-5")]
         public int Score { get; set; }
+        [Required]
+        [MaxLength(40, ErrorMessage = "Can be no more than 40 characters long")]
+        public string SubjectName {
+            get { return Subject.Name; }
+            set { Subject.Name = value; } }
         [MaxLength(40, ErrorMessage = "Can be no more than 40 characters long")]
         public string Reviewer { get; set; }
         [MaxLength(200, ErrorMessage = "Can be no more than 200 characters long")]
