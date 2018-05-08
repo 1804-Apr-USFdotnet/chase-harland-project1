@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<RestaurantReviews.Web.Models.Review>
 
 <p>
-    @Html.ActionLink("Create New", "Create", "Review", new { id = ViewBag.restId})
+    @Html.ActionLink("Create New Review", "Create", "Review", new { restId = (int)TempData["restId"]}, null)
 </p>
 <table class="table">
     <tr>
@@ -29,9 +29,9 @@
             @Html.DisplayFor(modelItem => item.Comment)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", "Review", new { id = ViewBag.restId }, null) |
-            @Html.ActionLink("Details", "Details", "Review", new { id = ViewBag.restId }, null) |
-            @Html.ActionLink("Delete", "Delete", "Review", new { id = ViewBag.restId }, null)
+            @Html.ActionLink("Edit", "Edit", "Review", new { id=item.Id }, null) |
+            @Html.ActionLink("Details", "Details", "Review", new { id=item.Id }, null) |
+            @Html.ActionLink("Delete", "Delete", "Review", new { id=item.Id }, null)
         </td>
     </tr>
 }

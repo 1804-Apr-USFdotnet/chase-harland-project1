@@ -13,6 +13,7 @@ namespace RestaurantReviews.Web.Models
         [Required]
         [MaxLength(40, ErrorMessage = "Can be no more than 40 characters long")]
         public string Name { get; set; }
+        [Display(Name = "Type of food", ShortName = "Food")]
         [MaxLength(60, ErrorMessage = "Can be no more than 60 characters long")]
         public string Food { get; set; }
 
@@ -22,5 +23,7 @@ namespace RestaurantReviews.Web.Models
             Name = name;
             Food = food;
         }
+
+        public Restaurant() { }
     }
 }

@@ -30,16 +30,22 @@ namespace RestaurantReviews.Web.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
+            ViewBag.restId = restId;
+
             Model.Restaurant r = lib.GetRestaurant((int)restId);
 
             if (r == null)
             {
                 return HttpNotFound();
             }
-            
-            var rest = ModelConverter.Convert(r);
 
-            return View(r);
+            Model.Review[] revs = lib.GetReviews((int)restId);
+
+            var revModels =
+                ModelConverter.Convert(revs,
+                ModelConverter.ConvertLite(r));
+
+            return View(revModels);
         }
 
         // GET: Review/Details/5
@@ -84,19 +90,22 @@ namespace RestaurantReviews.Web.Controllers
                 return HttpNotFound();
             }
 
-            return View(ModelConverter.ConvertLite(r));
+            TempData["restId"] = restId;
+
+            return View();
         }
 
         // POST: Review/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Models.Review rev)
+        public ActionResult Create([Bind(Include = "Score, Reviewer, Comment")] Models.Review rev)
         {
             try
             {
+                rev.SubjectID = (int)TempData["restId"];
                 lib.AddReview(ModelConverter.Convert(rev));
 
-                return RedirectToAction("Index", new { id = rev.Subject });
+                return RedirectToAction("Details", "Restaurant", new { id = rev.SubjectID });
             }
             catch
             {
@@ -126,6 +135,8 @@ namespace RestaurantReviews.Web.Controllers
                 return HttpNotFound();
             }
 
+            TempData["restId"] = rev.Subject;
+
             return View(
                 ModelConverter.Convert(rev,
                 ModelConverter.ConvertLite(r)));
@@ -139,9 +150,15 @@ namespace RestaurantReviews.Web.Controllers
 
             try
             {
-                lib.EditReview(ModelConverter.Convert(rev));
+                rev.SubjectID = (int)TempData["restId"];
+                bool result = lib.EditReview(ModelConverter.Convert(rev));
 
-                return RedirectToAction("Index", new { id = rev.Subject });
+                if (!result)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+
+                return RedirectToAction("Details", new { id = rev.Id });
             }
             catch
             {
@@ -176,9 +193,9 @@ namespace RestaurantReviews.Web.Controllers
         }
 
         // POST: Review/Delete/5
-        [HttpPost]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int? id, FormCollection collection)
+        public ActionResult DeleteConfirmed(int? id)
         {
             if (id == null)
             {
@@ -195,7 +212,7 @@ namespace RestaurantReviews.Web.Controllers
                     return HttpNotFound();
                 }
 
-                return RedirectToAction("Index", new { id = rev.Subject });
+                return RedirectToAction("Details", "Restaurant", new { id = rev.Subject});
             }
             catch
             {

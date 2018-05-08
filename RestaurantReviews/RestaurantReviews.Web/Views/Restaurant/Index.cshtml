@@ -13,20 +13,18 @@
 <table class="table">
     <tr>
         <th>
-            Name
-            @*@Html.DisplayNameFor(model => model.Name)*@
+            @Html.DisplayNameFor(model => model.Name)
         </th>
         <th>
-            Score
-            @*@Html.DisplayNameFor(model => model.AvgScore)*@
+            @Html.DisplayNameFor(model => model.AvgScore)
         </th>
         <th>
-            Type of Food
-            @*@Html.DisplayNameFor(model => model.Food)*@
+            @Html.DisplayNameFor(model => model.Food)
         </th>
         <th>
-            Reviews
-            @*@Html.DisplayNameFor(model => model.NumReviews)*@
+            @Html.DisplayNameFor(model => model.NumReviews)
+        </th>
+        <th>
         </th>
 
     </tr>
@@ -46,6 +44,7 @@
             @Html.DisplayFor(itemModel => item.NumReviews)
         </td>
     <td>
+        @Html.ActionLink("Review", "Create", "Review", new { restId = item.Id}, null) |
         @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
         @Html.ActionLink("Details", "Details", new { id = item.Id }) |
         @Html.ActionLink("Delete", "Delete", new { id = item.Id })

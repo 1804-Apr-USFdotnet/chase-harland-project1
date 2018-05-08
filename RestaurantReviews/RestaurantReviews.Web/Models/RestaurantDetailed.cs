@@ -21,6 +21,7 @@ namespace RestaurantReviews.Web.Models
             get { return _restaurant.Name; }
             set { _restaurant.Name = value; }
         }
+        [Display(Name = "Type of Food", ShortName = "Food")]
         [MaxLength(60, ErrorMessage = "Can be no more than 60 characters long")]
         public string Food
         {
@@ -29,8 +30,10 @@ namespace RestaurantReviews.Web.Models
         }
 
         [ScaffoldColumn(false)]
+        [Display(Name = "Average Score", ShortName = "Score")]
         public double AvgScore { get; private set; }
         [ScaffoldColumn(false)]
+        [Display(Name = "Number of Reviews", ShortName = "Reviews")]
         public int NumReviews
         {
             get
@@ -48,6 +51,8 @@ namespace RestaurantReviews.Web.Models
             _reviews = new List<Review>(revs);
             AvgScore = avgScore;
         }
+
+        public RestaurantDetailed() { }
 
         public Review[] GetReviews()
         {

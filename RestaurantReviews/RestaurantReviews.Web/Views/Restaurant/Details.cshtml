@@ -12,8 +12,7 @@
         </dd>
 
         <dt>
-            Score
-            @*@Html.DisplayNameFor(model => model.AvgScore)*@
+            @Html.DisplayNameFor(model => model.AvgScore)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.AvgScore)
@@ -27,8 +26,7 @@
         </dd>
 
         <dt>
-            Reviews
-            @*@Html.DisplayNameFor(model => model.NumReviews)*@
+            @Html.DisplayNameFor(model => model.NumReviews)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.NumReviews)
@@ -37,7 +35,9 @@
     </dl>
 </div>
 <div>
-    @Html.Partial("_Reviews", Model.GetReviews())
+    @*@Html.Partial("_Reviews", Model.GetReviews(), ViewData)*@
+    @Html.Partial("../Review/Index", Model.GetReviews())
+    @*@Html.Action("Index", "Review", new { id = Model.Id})*@
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |

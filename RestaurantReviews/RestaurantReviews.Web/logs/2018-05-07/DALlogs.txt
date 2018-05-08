@@ -1,0 +1,1 @@
+2018-05-07 22:06:01.3790|INFO|RestaurantReviews.Data.AwsTsqlAccessor|Added review: 0

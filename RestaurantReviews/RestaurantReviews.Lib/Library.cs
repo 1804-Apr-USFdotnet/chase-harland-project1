@@ -127,7 +127,8 @@ namespace RestaurantReviews.Lib
 
                 foreach (string term in searchTerms)
                 {
-                    if (r.Name.ToLower().Contains(term.ToLower()))
+                    if (r.Name.ToLower().Contains(term.ToLower()) ||
+                        r.Food.ToLower().Contains(term.ToLower()))
                     {
                         n++;
                     }
@@ -150,6 +151,11 @@ namespace RestaurantReviews.Lib
         public Model.Restaurant[] Search(string term)
         {
             return Search(new string[] { term });
+        }
+
+        public Model.Restaurant[] SearchAndParse(string query)
+        {
+            return Search(query.Split());
         }
 
         public Model.Restaurant[] GetRestaurants()

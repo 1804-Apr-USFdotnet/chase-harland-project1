@@ -31,6 +31,14 @@ namespace RestaurantReviews.Web.Controllers
                     lib.GetRestaurants()));
         }
 
+        public ActionResult Search(string query)
+        {
+            Model.Restaurant[] results = lib.SearchAndParse(query);
+
+            return View("Index",
+                ModelConverter.Convert(results));
+        }
+
         // GET: Restaurant/Details/5
         public ActionResult Details(int? id)
         {
@@ -46,6 +54,8 @@ namespace RestaurantReviews.Web.Controllers
                 return HttpNotFound();
             }
 
+            TempData["restId"] = id;
+
             return View(ModelConverter.Convert(r));
         }
 
@@ -58,7 +68,7 @@ namespace RestaurantReviews.Web.Controllers
         // POST: Restaurant/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Models.Restaurant r)
+        public ActionResult Create([Bind(Include = "Name,Food")] Models.Restaurant r)
         {
             try
             {
@@ -87,7 +97,7 @@ namespace RestaurantReviews.Web.Controllers
                 return HttpNotFound();
             }
 
-            return View(ModelConverter.Convert(r));
+            return View(ModelConverter.ConvertLite(r));
         }
 
         // POST: Restaurant/Edit/5
@@ -127,7 +137,7 @@ namespace RestaurantReviews.Web.Controllers
         // POST: Restaurant/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int? id, FormCollection collection)
+        public ActionResult DeleteConfirm(int? id)
         {
             if (id == null)
             {

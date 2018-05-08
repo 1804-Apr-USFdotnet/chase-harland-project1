@@ -24,11 +24,9 @@ namespace RestaurantReviews.Web.Controllers
 
         public ActionResult Index()
         {
-            //var top3 = lib.Sort(SortBy.Score, false, 3);
+            var top3 = lib.Sort(SortBy.Score, false, 3);
 
-            //return View(ModelConverter.Convert(top3));
-
-            return View();
+            return View(ModelConverter.Convert(top3));
         }
 
         public ActionResult About()
