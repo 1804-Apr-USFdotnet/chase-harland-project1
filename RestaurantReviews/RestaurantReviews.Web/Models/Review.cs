@@ -11,7 +11,8 @@ namespace RestaurantReviews.Web.Models
         [ScaffoldColumn(false)]
         public int Id { get; set; }
         [Required]
-        [Range(1,5, ErrorMessage = "Rating must be 1-5")]
+        [RegularExpression("([0-5])", ErrorMessage = "Please enter valid Number")]
+        [Range(0,5, ErrorMessage = "Rating must be 0-5")]
         public int Score { get; set; }
         [Required]
         [Display(Name = "Restaurant")]
@@ -38,6 +39,7 @@ namespace RestaurantReviews.Web.Models
         public Review()
         {
             Reviewer = "Anonymous";
+            Comment = "N/A";
             Subject = new Restaurant();
         }
     }

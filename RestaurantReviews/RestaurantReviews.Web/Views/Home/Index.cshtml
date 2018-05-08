@@ -19,7 +19,7 @@
 </div>
 
 <h3>
-    Out top 3 picks
+    Our top 3 picks
 </h3>
 
 <table class="table">
@@ -58,7 +58,7 @@
             @Html.DisplayFor(itemModel => item.NumReviews)
         </td>
         <td>
-            @Html.ActionLink("Review", "Create", "Review", new { restId = item.Id }, new { @class = "btn btn - default" }) |
+            @Html.ActionLink("Review", "Create", "Review", new { restId = item.Id }, null) |
             @Html.ActionLink("Details", "Details", "Restaurant", new { id = item.Id }, null)
         </td>
     </tr>

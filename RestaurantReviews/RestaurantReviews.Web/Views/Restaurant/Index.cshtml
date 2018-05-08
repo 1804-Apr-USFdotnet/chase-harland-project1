@@ -23,7 +23,9 @@
             @Html.ActionLink("v", "index", new { sort = "score", asc = "false" })
         </th>
         <th>
+            @Html.ActionLink("^", "index", new { sort = "food", asc = "true" })
             @Html.DisplayNameFor(model => model.Food)
+            @Html.ActionLink("v", "index", new { sort = "food", asc = "false" })
         </th>
         <th>
             @Html.ActionLink("^", "index", new { sort = "numrev", asc = "true" })

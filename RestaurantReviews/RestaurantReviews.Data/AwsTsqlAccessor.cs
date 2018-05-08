@@ -42,7 +42,7 @@ namespace RestaurantReviews.Data
                 });
 
                 context.SaveChanges();
-                log.Info("Added review: " + review.Id);
+                log.Info("Added review: " + newRev.revid);
                 return newRev.revid;
             }
         }

@@ -102,15 +102,20 @@ namespace RestaurantReviews.Web.Controllers
         {
             try
             {
-                rev.SubjectID = (int)TempData["restId"];
-                lib.AddReview(ModelConverter.Convert(rev));
+                if (ModelState.IsValid)
+                {
+                    rev.SubjectID = (int)TempData["restId"];
+                    lib.AddReview(ModelConverter.Convert(rev));
 
-                return RedirectToAction("Details", "Restaurant", new { id = rev.SubjectID });
+                    return RedirectToAction("Details", "Restaurant", new { id = rev.SubjectID }); 
+                }
             }
             catch
             {
                 return View();
             }
+
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
         // GET: Review/Edit/5
@@ -150,20 +155,25 @@ namespace RestaurantReviews.Web.Controllers
 
             try
             {
-                rev.SubjectID = (int)TempData["restId"];
-                bool result = lib.EditReview(ModelConverter.Convert(rev));
-
-                if (!result)
+                if (ModelState.IsValid)
                 {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
+                    rev.SubjectID = (int)TempData["restId"];
+                    bool result = lib.EditReview(ModelConverter.Convert(rev));
 
-                return RedirectToAction("Details", new { id = rev.Id });
+                    if (!result)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+
+                    return RedirectToAction("Details", new { id = rev.Id }); 
+                }
             }
             catch
             {
                 return View();
             }
+
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
         // GET: Review/Delete/5

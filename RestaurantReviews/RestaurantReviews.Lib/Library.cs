@@ -8,7 +8,7 @@ using System.Configuration;
 
 namespace RestaurantReviews.Lib
 {
-    public enum SortBy { Alphabetical, Score, NumReviews };
+    public enum SortBy { Alphabetical, Score, NumReviews, Food };
     
     public class Library
     {
@@ -49,9 +49,11 @@ namespace RestaurantReviews.Lib
             List<Model.Restaurant> restaurants =
                 new List<Model.Restaurant>(dm.GetRestaurants());
 
-            if (n < 0)
+            int total = restaurants.Count();
+
+            if (n < 0 || n > total)
             {
-                n = restaurants.Count();
+                n = total;
             }
             Model.Restaurant[] output = new Model.Restaurant[n];
             if (sortTerm == SortBy.Alphabetical)
@@ -84,6 +86,23 @@ namespace RestaurantReviews.Lib
                     restaurants.Sort(delegate (Model.Restaurant x, Model.Restaurant y)
                     {
                         return y.Reviews.Count().CompareTo(x.Reviews.Count());
+                    });
+                }
+            }
+            else if (sortTerm == SortBy.Food)
+            {
+                if (asc)
+                {
+                    restaurants.Sort(delegate (Model.Restaurant x, Model.Restaurant y)
+                    {
+                        return string.Compare(x.Food, y.Food);
+                    });
+                }
+                else
+                {
+                    restaurants.Sort(delegate (Model.Restaurant x, Model.Restaurant y)
+                    {
+                        return string.Compare(y.Food, x.Food);
                     });
                 }
             }

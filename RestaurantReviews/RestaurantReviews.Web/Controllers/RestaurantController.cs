@@ -24,27 +24,9 @@ namespace RestaurantReviews.Web.Controllers
 
 
         // GET: Restaurant
-        public ActionResult Index(
-            string sort = "score", string asc = "false",
-            string n = "-1", string all = "false")
+        public ActionResult Index(string sort = "score",
+            string asc = "false", string n = "-1")
         {
-            bool getAll;
-            try
-            {
-                getAll = bool.Parse(all.ToLower());
-            }
-            catch(Exception)
-            {
-                getAll = false;
-            }
-
-            if (getAll)
-            {
-                return View(
-                    ModelConverter.Convert(
-                        lib.GetRestaurants()));
-            }
-
             SortBy sortScheme;
 
             switch (sort.ToLower())
@@ -57,6 +39,9 @@ namespace RestaurantReviews.Web.Controllers
                     break;
                 case "score":
                     sortScheme = SortBy.Score;
+                    break;
+                case "food":
+                    sortScheme = SortBy.Food;
                     break;
                 default:
                     sortScheme = SortBy.Score;
@@ -138,14 +123,18 @@ namespace RestaurantReviews.Web.Controllers
         {
             try
             {
-                lib.AddRestaurant(ModelConverter.Convert(r));
-
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    lib.AddRestaurant(ModelConverter.Convert(r));
+                    return RedirectToAction("Index");
+                }
             }
             catch
             {
                 return View();
             }
+
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
         // GET: Restaurant/Edit/5
@@ -173,13 +162,19 @@ namespace RestaurantReviews.Web.Controllers
         {
             try
             {
-                lib.EditRestaurant(ModelConverter.Convert(r));
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    lib.EditRestaurant(ModelConverter.Convert(r));
+                    return RedirectToAction("Index");
+                }
+
             }
             catch
             {
                 return View();
             }
+
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
         // GET: Restaurant/Delete/5

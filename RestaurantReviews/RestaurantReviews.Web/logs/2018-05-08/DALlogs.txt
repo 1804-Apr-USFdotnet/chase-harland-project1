@@ -1,0 +1,11 @@
+2018-05-08 09:15:03.1301|INFO|RestaurantReviews.Data.AwsTsqlAccessor|Added review: 0
+2018-05-08 09:25:51.9508|INFO|RestaurantReviews.Data.AwsTsqlAccessor|Added restaurant: 9: new
+2018-05-08 09:26:08.8524|INFO|RestaurantReviews.Data.AwsTsqlAccessor|Added review: 0
+2018-05-08 09:26:12.9288|INFO|RestaurantReviews.Data.AwsTsqlAccessor|Removed review 32
+2018-05-08 09:26:17.6545|INFO|RestaurantReviews.Data.AwsTsqlAccessor|Removed restaurant 9
+2018-05-08 09:29:24.7127|INFO|RestaurantReviews.Data.AwsTsqlAccessor|Added review: 0
+2018-05-08 09:29:40.5297|INFO|RestaurantReviews.Data.AwsTsqlAccessor|Removed review 33
+2018-05-08 11:01:18.7539|INFO|RestaurantReviews.Data.AwsTsqlAccessor|Added review: 0
+2018-05-08 11:30:22.3066|INFO|RestaurantReviews.Data.AwsTsqlAccessor|Updated restaurant 7
+2018-05-08 11:30:31.5564|INFO|RestaurantReviews.Data.AwsTsqlAccessor|Updated restaurant 7
+2018-05-08 11:30:39.1140|INFO|RestaurantReviews.Data.AwsTsqlAccessor|Updated restaurant 7
