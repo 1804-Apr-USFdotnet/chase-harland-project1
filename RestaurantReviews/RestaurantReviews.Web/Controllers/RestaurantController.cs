@@ -98,7 +98,16 @@ namespace RestaurantReviews.Web.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Model.Restaurant r = lib.GetRestaurant((int)id);
+            Model.Restaurant r;
+
+            try
+            {
+                r = lib.GetRestaurant((int)id);
+            }
+            catch (Exception)
+            {
+                return HttpNotFound();
+            }
 
             if (r == null)
             {
@@ -145,7 +154,16 @@ namespace RestaurantReviews.Web.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Model.Restaurant r = lib.GetRestaurant((int)id);
+            Model.Restaurant r;
+
+            try
+            {
+                r = lib.GetRestaurant((int)id);
+            }
+            catch (Exception)
+            {
+                return HttpNotFound();
+            }
 
             if (r == null)
             {
@@ -185,7 +203,16 @@ namespace RestaurantReviews.Web.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var r = lib.GetRestaurant((int)id);
+            Model.Restaurant r;
+
+            try
+            {
+                r = lib.GetRestaurant((int)id);
+            }
+            catch (Exception)
+            {
+                return HttpNotFound();
+            }
 
             if (r == null)
             {
