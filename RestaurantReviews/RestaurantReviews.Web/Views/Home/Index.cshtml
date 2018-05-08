@@ -5,15 +5,17 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>
-    Welcome
-</h2>
+<div class="jumbotron">
+    <h2>
+        Restaurant Rates
+    </h2>
+    <p>We rate restaurants</p>
+</div>
 
 <div class="searchBox">
     @using (Html.BeginForm("Search", "Restaurant", FormMethod.Get))
     {
-        <label for="s">Search:</label>
-        <input id="s" name="query" class="searchBox" type="text" />
+        <input id="s" name="query" class="searchBox" type="text" autofocus />
         <input type="submit" value="Search" class="btn btn-default" />
     }
 </div>
@@ -44,24 +46,24 @@
 
     @foreach (var item in Model)
     {
-    <tr>
-        <td>
-            @Html.DisplayFor(itemModel => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(itemModel => item.AvgScore)
-        </td>
-        <td>
-            @Html.DisplayFor(itemModel => item.Food)
-        </td>
-        <td>
-            @Html.DisplayFor(itemModel => item.NumReviews)
-        </td>
-        <td>
-            @Html.ActionLink("Review", "Create", "Review", new { restId = item.Id }, null) |
-            @Html.ActionLink("Details", "Details", "Restaurant", new { id = item.Id }, null)
-        </td>
-    </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(itemModel => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(itemModel => item.AvgScore)
+            </td>
+            <td>
+                @Html.DisplayFor(itemModel => item.Food)
+            </td>
+            <td>
+                @Html.DisplayFor(itemModel => item.NumReviews)
+            </td>
+            <td>
+                @Html.ActionLink("Review", "Create", "Review", new { restId = item.Id }, null) |
+                @Html.ActionLink("Details", "Details", "Restaurant", new { id = item.Id }, null)
+            </td>
+        </tr>
     }
 
 </table>

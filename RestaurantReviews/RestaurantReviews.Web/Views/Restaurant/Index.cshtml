@@ -7,6 +7,14 @@
 
 <h2>Restaurant List</h2>
 
+<div class="searchBox">
+    @using (Html.BeginForm("Search", "Restaurant", FormMethod.Get))
+    {
+        <input id="s" name="query" class="searchBox" type="text" autofocus/>
+        <input type="submit" value="Search" class="btn btn-default" />
+    }
+</div>
+
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
