@@ -12,6 +12,8 @@ namespace RestaurantReviews.Lib
     
     public class Library
     {
+        private static string path = "Json/data.json";
+
         private IDataManager dm;
 
         public Library(string mode)
@@ -198,6 +200,35 @@ namespace RestaurantReviews.Lib
         public bool RemoveReview(int id)
         {
             return dm.RemoveReview(id);
+        }
+
+        public static List<Model.Restaurant> ReadJson()
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                using (FileStream fs = File.Open(path,
+                    FileMode.Open, FileAccess.Read))
+                {
+                    DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(List<Model.Restaurant>));
+                    fs.CopyTo(ms);
+                    return ((List<Model.Restaurant>)ser.ReadObject(ms));
+                }
+            }
+        }
+
+        public static void WriteJson(List<Model.Restaurant> restaurants)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                using (FileStream fs = File.Open(path,
+                    FileMode.Open, FileAccess.ReadWrite))
+                {
+                    DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(List<Model.Restaurant>));
+                    ser.WriteObject(ms, restaurants);
+                    ms.Position = 0;
+                    ms.CopyTo(fs);
+                }
+            }
         }
     }
 }

@@ -24,11 +24,77 @@ namespace RestaurantReviews.Web.Controllers
 
 
         // GET: Restaurant
-        public ActionResult Index()
+        public ActionResult Index(
+            string sort = "score", string asc = "false",
+            string n = "-1", string all = "false")
         {
-            return View(
-                ModelConverter.Convert(
-                    lib.GetRestaurants()));
+            bool getAll;
+            try
+            {
+                getAll = bool.Parse(all.ToLower());
+            }
+            catch(Exception)
+            {
+                getAll = false;
+            }
+
+            if (getAll)
+            {
+                return View(
+                    ModelConverter.Convert(
+                        lib.GetRestaurants()));
+            }
+
+            SortBy sortScheme;
+
+            switch (sort.ToLower())
+            {
+                case "alpha":
+                    sortScheme = SortBy.Alphabetical;
+                    break;
+                case "numrev":
+                    sortScheme = SortBy.NumReviews;
+                    break;
+                case "score":
+                    sortScheme = SortBy.Score;
+                    break;
+                default:
+                    sortScheme = SortBy.Score;
+                    break;
+            }
+
+            bool ascending;
+            try
+            {
+                ascending = bool.Parse(asc.ToLower());
+            }
+            catch (Exception)
+            {
+                ascending = false;
+            }
+
+            int topN;
+            try
+            {
+                topN = int.Parse(n);
+            }
+            catch (Exception)
+            {
+                topN = -1;
+            }
+
+            if (topN < 0)
+            {
+                return View(
+                    ModelConverter.Convert(
+                        lib.Sort(sortScheme, ascending)));
+            }
+            else
+            {
+                return View(
+                    ModelConverter.Convert(
+                        lib.Sort(sortScheme, ascending, topN)));
+            }
         }
 
         public ActionResult Search(string query)

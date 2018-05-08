@@ -13,16 +13,22 @@
 <table class="table">
     <tr>
         <th>
+            @Html.ActionLink("^", "index", new { sort = "alpha", asc = "true" })
             @Html.DisplayNameFor(model => model.Name)
+            @Html.ActionLink("v", "index", new { sort = "alpha", asc = "false" })
         </th>
         <th>
+            @Html.ActionLink("^", "index", new { sort = "score", asc = "true" })
             @Html.DisplayNameFor(model => model.AvgScore)
+            @Html.ActionLink("v", "index", new { sort = "score", asc = "false" })
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Food)
         </th>
         <th>
+            @Html.ActionLink("^", "index", new { sort = "numrev", asc = "true" })
             @Html.DisplayNameFor(model => model.NumReviews)
+            @Html.ActionLink("v", "index", new { sort = "numrev", asc = "false" })
         </th>
         <th>
         </th>
